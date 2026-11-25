@@ -32,7 +32,7 @@ const LyricPreview=({cues=[],pulses=[],synthetic=false})=>{
   const scene=Math.floor(f/150)%3;
   const color=colors[scene];
   const move=18*Math.sin(f/90);
-  return <AbsoluteFill style={{background:'linear-gradient(135deg,#101b2d,#17344a)',color:'#f0f5fb',fontFamily:'Arial, sans-serif',overflow:'hidden'}}>
+  return <AbsoluteFill style={{background:'linear-gradient(135deg,#101b2d,#17344a)',color:'#f0f5fb',fontFamily:'"Noto Sans CJK JP", "Yu Gothic", Meiryo, Arial, sans-serif',overflow:'hidden'}}>
     <Audio src={staticFile('preview.wav')}/>
     <div style={{position:'absolute',left:460+move,top:100,width:1000,height:860,borderRadius:'50%',background:'radial-gradient(ellipse,'+color+',transparent 68%)',opacity:.13+energy*.13}}/>
     <div style={{position:'absolute',top:90,left:100,fontSize:26,letterSpacing:5,color}}>GACKY-LAB / {synthetic?'SYNTHETIC DEMO':'LOCAL LYRIC PREVIEW'}</div>

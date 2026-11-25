@@ -27,6 +27,7 @@ def main():
     require(evidence["source_sha256"]==digest,"upstream WAV hash mismatch")
     require(h["language"]=="ja" and h["lyrics_text"]==text,"upstream lyric mismatch")
     timing={"schema_version":"0.1.0","master_sha256":digest,"lyrics_sha256":h["lyrics_sha256"],"lyric_version_id":h["lyric_version_id"],"review_status":"SYNTHETIC_FIXTURE","cues":[{"start_ms":i*5000,"end_ms":(i+1)*5000,"line_index":i} for i in range(6)]}
+    (out/"timing.json").write_text(json.dumps(timing,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     props=make_props(h,timing,digest,0,evidence)
     require([c["text"] for c in props["cues"]]==lines,"caption transfer mismatch")
     require([(c["startFrame"],c["endFrame"]) for c in props["cues"]]==[(i*150,(i+1)*150) for i in range(6)],"frame mapping mismatch")
