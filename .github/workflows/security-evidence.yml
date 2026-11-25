@@ -1,0 +1,46 @@
+name: Dependency and static security evidence
+on:
+  pull_request:
+    paths: ['scripts/**','tests/**','requirements-integration.txt','remotion/package.json','.github/workflows/security-evidence.yml']
+  push:
+    branches: [main]
+    paths: ['scripts/**','tests/**','requirements-integration.txt','remotion/package.json','.github/workflows/security-evidence.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: python -m pip install pip-audit==2.9.0 bandit==1.8.3
+      - name: Collect reports, do not confuse findings with clean results
+        run: |
+          mkdir -p out/security
+          set +e
+          pip-audit -r requirements-integration.txt --format json -o out/security/pip-audit.json
+          py=$?
+          bandit -r scripts -f json -o out/security/bandit.json
+          bs=$?
+          (cd remotion && npm install --package-lock-only --ignore-scripts --no-audit --no-fund && npm audit --omit=dev --json > ../out/security/npm-audit.json)
+          js=$?
+          printf '{"pip_audit_exit":%s,"bandit_exit":%s,"npm_audit_exit":%s}\n' "$py" "$bs" "$js" > out/security/status.json
+          cat out/security/status.json
+          # This job collects evidence. A nonzero scanner exit may mean findings OR scan failure.
+          # No clean-security assertion is made; inspect each report.
+          python -c "import json;from pathlib import Path; [json.loads(p.read_text()) for p in Path('out/security').glob('*.json')]"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: security-evidence
+          path: out/security/
+          if-no-files-found: error
