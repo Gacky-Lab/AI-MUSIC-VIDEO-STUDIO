@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "source",
+    "wav_path",
+    "wav_sha256",
+    "duration_ms",
+    "lyric_version",
+    "lyric_sha256",
+    "provenance"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.1.0"
+    },
+    "source": {
+      "enum": [
+        "suno",
+        "vocaloid_daw",
+        "synthetic"
+      ]
+    },
+    "wav_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "wav_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "duration_ms": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "lyric_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "lyric_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "provenance": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

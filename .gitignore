@@ -1,0 +1,16 @@
+out/
+private/
+assets/private/
+.env
+.env.*
+!.env.example
+node_modules/
+__pycache__/
+*.wav
+*.mp4
+*.flac
+*.mp3
+*.mov
+*.webm
+*.vpr
+*.vsqx

@@ -1,0 +1,27 @@
+{
+  "schema_version": "0.1.0",
+  "fps": 30,
+  "width": 1920,
+  "height": 1080,
+  "total_frames": 450,
+  "scenes": [
+    {
+      "id": "s1",
+      "start_frame": 0,
+      "end_frame": 150,
+      "engine": "procedural"
+    },
+    {
+      "id": "s2",
+      "start_frame": 150,
+      "end_frame": 300,
+      "engine": "procedural"
+    },
+    {
+      "id": "s3",
+      "start_frame": 300,
+      "end_frame": 450,
+      "engine": "procedural"
+    }
+  ]
+}
