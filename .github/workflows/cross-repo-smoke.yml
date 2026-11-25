@@ -1,0 +1,38 @@
+name: Cross-repository evidence smoke
+on:
+  push:
+    branches: [main]
+    paths: ['scripts/**', '.github/workflows/cross-repo-smoke.yml']
+  pull_request:
+    paths: ['scripts/**', '.github/workflows/cross-repo-smoke.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: Gacky-Lab/LYRIC-DESIGN-FRAMEWORK
+          ref: d13b8e7c2a2b763256b6f234b756951dab872bd9
+          path: upstream/lyric
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: Gacky-Lab/AI-MUSIC-INTELLIGENCE-ENGINE
+          ref: 6337f65ee5fb2c28558cea83c23266e2e0b51206
+          path: upstream/mir
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python scripts/cross_repo_smoke.py --lyric-repo upstream/lyric --mir-repo upstream/mir
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cross-repo-evidence
+          path: out/cross-repo/report.json
