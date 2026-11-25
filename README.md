@@ -1,7 +1,10 @@
 # AI-MUSIC-VIDEO-STUDIO
+
+[![Offline CI](https://github.com/Gacky-Lab/AI-MUSIC-VIDEO-STUDIO/actions/workflows/offline.yml/badge.svg?branch=main)](https://github.com/Gacky-Lab/AI-MUSIC-VIDEO-STUDIO/actions/workflows/offline.yml) · [Gacky-Lab research portfolio](https://github.com/Gacky-Lab/AI-MUSIC-VIDEO-STUDIO/blob/main/docs/profile/README.md)
+
 AI音楽映像制作・自動編集・品質保証基盤 / Reproducible AI music video production framework.
 
-**Status: Design + Phase 0 FFmpeg smoke implementation.** Remotion, Windows, real-song alignment and paid generation are NOT_RUN. Independent research, not affiliated with providers.
+**Status: Phase 0 — synthetic FFmpeg and Remotion rendering verified in CI.** Windows runtime, real-song alignment, subjective video quality and paid generation remain NOT_RUN. Independent research, not affiliated with providers.
 
 ```mermaid
 flowchart LR
@@ -42,4 +45,9 @@ No private music, credentials, signed URLs, proprietary assets or voicebanks. Li
 ## Portfolio and next milestone
 - [Gacky-Lab portfolio README draft](docs/profile/README.md)
 - [Conceptual portfolio architecture](docs/profile/architecture.svg)
-- [P0b Remotion candidate / Windows bring-up](docs/P0B_REMOTION.md): synthetic motion graphic; runtime validation pending at authoring.
+- [P0b Remotion candidate / Windows bring-up](docs/P0B_REMOTION.md): synthetic motion graphic; Linux CI render and metadata checks passed. Windows repeat and visual inspection remain pending.
+
+### Verified Remotion preview (Linux CI)
+
+- [CI run and downloadable artifact](https://github.com/Gacky-Lab/AI-MUSIC-VIDEO-STUDIO/actions/runs/45542015749): 15 s, 1920×1080, 30 fps, 450 frames; all five independent stream checks passed. Synthetic test tone only.
+- No paid generation API was used. This is not a real-song MV or an artistic-quality assessment. The generated package lock is in the CI artifact; dependency lock review and Windows verification remain open.
