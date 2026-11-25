@@ -53,4 +53,7 @@ No private music, credentials, signed URLs, proprietary assets or voicebanks. Li
 - No paid generation API was used. This is not a real-song MV or an artistic-quality assessment. The generated package lock is in the CI artifact; dependency lock review and Windows verification remain open.
 
 ## P1 local lyric preview candidate
-[30-second local preview guide](docs/P1_LOCAL_PREVIEW.md): final WAV, Lyric Handoff v1, manually reviewed anchors and optional hash-bound MIR evidence. Synthetic CI pending at authoring; real-song acceptance remains NOT_RUN.
+[30-second local preview guide](docs/P1_LOCAL_PREVIEW.md): final WAV, Lyric Handoff v1, manually reviewed anchors and optional hash-bound MIR evidence. Synthetic 30-second render and four independent checks passed in [CI](https://github.com/Gacky-Lab/AI-MUSIC-VIDEO-STUDIO/actions/runs/45542889707); real-song acceptance remains NOT_RUN.
+
+## Cross-project contract verification
+[Cross-repository synthetic smoke](docs/CROSS_REPO_SMOKE.md) uses the actual pinned lyric exporter and MIR analyzer to produce Japanese caption and audio evidence inputs. CI results pending at authoring.
