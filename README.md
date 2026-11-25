@@ -68,4 +68,4 @@ No private music, credentials, signed URLs, proprietary assets or voicebanks. Li
 
 ## Five-repository integration candidate
 
-[Integration runner and Docker instructions](docs/FIVE_REPO_INTEGRATION.md). Offline synthetic pipeline with pinned upstream code, failure reports, and a local HTML evidence dashboard. Live Suno, vocal synthesis, and real-song quality are NOT_RUN. CI evidence pending until verified.
+[Integration runner and Docker instructions](docs/FIVE_REPO_INTEGRATION.md). Offline synthetic pipeline with pinned upstream code, failure reports, and a local HTML evidence dashboard. Live Suno, vocal synthesis, and real-song quality are NOT_RUN. [Five-repository CI](https://github.com/Gacky-Lab/AI-MUSIC-VIDEO-STUDIO/actions/runs/45546958404) passed host and network-disabled Docker reproducibility plus 30-second video rendering and 7 independent render checks. Note and transcript alignment candidates are being added with expanded gates.

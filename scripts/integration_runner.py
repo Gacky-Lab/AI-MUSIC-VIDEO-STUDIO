@@ -20,7 +20,7 @@ except ImportError:
 ROOT=Path(__file__).resolve().parents[1]
 PINS=json.loads((ROOT/"config/integration-pins.json").read_text())
 LINES=["朝の光がほどける","青い空へ歩き出す","遠い波の音を聴く","静かな風が通り過ぎる","小さな星が目を覚ます","新しい景色を見つける"]
-STAGES=["provenance","lyric","suno_proposal","vocaloid_midi","synthetic_audio","mir","pitch","video_props","negative_gates"]
+STAGES=["provenance","lyric","suno_proposal","vocaloid_midi","synthetic_audio","mir","pitch","note_candidates","alignment_candidates","video_props","negative_gates"]
 def require(ok,msg):
     if not ok: raise ValueError(msg)
 def digest(path):
@@ -123,16 +123,40 @@ def execute(upstream,out):
             py(repos["mir"],"-m","mir.pitch",out/"source.wav","--output",out/"pitch.json")
             p=read(out/"pitch.json")
             require(p["source_sha256"]==master,"pitch identity")
-            errors=[]
+            errors=[]; eligible=0
             for f in p["frames"]:
                 t=f["center_s"]; phase=t%.5
-                if .07<=phase<=.22 and f["candidate"] is not None:
-                    expected=m["notes"][int(t/.5)]["pitch_midi"]
-                    errors.append(abs(f["candidate"]["midi_candidate"]-expected)*100)
-            require(len(errors)>=240 and sum(e<=35 for e in errors)/len(errors)>=.95,"synthetic pitch threshold")
-            report["pitch_benchmark"]={"matched_frames":len(errors),"within_35_cents_fraction":sum(e<=35 for e in errors)/len(errors),"real_song_accuracy":"NOT_RUN"}
+                if .07<=phase<=.22:
+                    eligible+=1
+                    if f["candidate"] is not None:
+                        expected=m["notes"][int(t/.5)]["pitch_midi"]
+                        errors.append(abs(f["candidate"]["midi_candidate"]-expected)*100)
+            correct=sum(e<=35 for e in errors)
+            require(eligible>=240 and correct/eligible>=.95,"synthetic pitch threshold")
+            report["pitch_benchmark"]={"eligible_frames":eligible,"voiced_frames":len(errors),"correct_frames":correct,"within_35_cents_fraction":correct/eligible,"real_song_accuracy":"NOT_RUN"}
         stage("pitch",pitch)
-        timing={"schema_version":"0.1.0","master_sha256":master,"lyrics_sha256":h["lyrics_sha256"],"lyric_version_id":h["lyric_version_id"],"review_status":"SYNTHETIC_FIXTURE","cues":[{"start_ms":i*5000,"end_ms":(i+1)*5000,"line_index":i} for i in range(6)]}
+        def notes():
+            py(repos["mir"],"-m","mir.notes",out/"pitch.json","--output",out/"note-candidates.json")
+            result=read(out/"note-candidates.json")
+            require(result["source_sha256"]==master and result["status"]=="REVIEW_ONLY","note evidence identity")
+            expected=[n["pitch_midi"] for n in m["notes"]]
+            actual=[n["pitch_midi"] for n in result["notes"]]
+            require(actual==expected,"synthetic note sequence mismatch")
+            onset_errors=[abs(n["start_s"]-i*.5) for i,n in enumerate(result["notes"])]
+            require(max(onset_errors)<=.12,"synthetic onset threshold")
+            report["note_benchmark"]={"expected":len(expected),"matched_pitch_sequence":len(actual),"max_onset_error_s":max(onset_errors),"real_song_accuracy":"NOT_RUN"}
+        stage("note_candidates",notes)
+        def alignment():
+            transcript={"schema_version":"0.1.0","master_sha256":master,"source":"SYNTHETIC_FIXTURE","segments":[{"start_ms":i*5000,"end_ms":(i+1)*5000,"text":line} for i,line in enumerate(LINES)]}
+            write(out/"transcript.json",transcript)
+            py(repos["lyric"],"scripts/align_transcript.py","--lyrics",out/"handoff.json","--transcript",out/"transcript.json","--output",out/"alignment-candidates.json")
+            candidate=read(out/"alignment-candidates.json")
+            require(candidate["review_status"]=="CANDIDATE_REVIEW_REQUIRED" and candidate["master_sha256"]==master,"alignment identity")
+            reject(lambda:make_props(h,candidate,master,0,ev))
+            return candidate
+        candidate=stage("alignment_candidates",alignment)
+        timing={"schema_version":"0.1.0","master_sha256":master,"lyrics_sha256":h["lyrics_sha256"],"lyric_version_id":h["lyric_version_id"],"review_status":"SYNTHETIC_FIXTURE","cues":candidate["cues"]}
+        require(timing["cues"]==[{"start_ms":i*5000,"end_ms":(i+1)*5000,"line_index":i} for i in range(6)],"synthetic ground truth mismatch")
         write(out/"timing.json",timing)
         def video():
             props=make_props(h,timing,master,0,ev)

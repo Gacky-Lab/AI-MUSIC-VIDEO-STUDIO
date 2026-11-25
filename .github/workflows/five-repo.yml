@@ -19,7 +19,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: Gacky-Lab/LYRIC-DESIGN-FRAMEWORK
-          ref: 5fe6d48795eace1f8e42936afb0a88a1e3c5e2b3
+          ref: a748dc43a25632e90fa997428f2726778fd883d0
           path: upstream/lyric
           persist-credentials: false
       - uses: actions/checkout@v4
@@ -37,14 +37,19 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: Gacky-Lab/AI-MUSIC-INTELLIGENCE-ENGINE
-          ref: affe00f8eb8355abd456a3cadf8678e1a337bbd5
+          ref: aca0837bfef4f7f0820bfffadea442eedc136cf0
           path: upstream/mir
           persist-credentials: false
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
       - run: pip install -r requirements-integration.txt
-      - run: python -m unittest discover -s tests -v
+      - run: python -m pip install coverage==7.8.0
+      - run: python -m coverage run --source=scripts -m unittest discover -s tests -v
+      - run: python -m coverage report
+      - run: mkdir -p out && python -m coverage xml -o out/coverage.xml
+      - run: python -m compileall -q scripts tests
+      - run: python -m pip check
       - run: python scripts/integration_runner.py --upstream upstream --output out/integration
       - name: Containerized offline reproduction
         run: |
@@ -65,6 +70,7 @@ jobs:
         with:
           name: five-repo-evidence
           path: |
+            out/coverage.xml
             out/integration/
             out/docker-integration/report.json
             out/integration-video/

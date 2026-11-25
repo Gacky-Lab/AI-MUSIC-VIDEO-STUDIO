@@ -14,3 +14,6 @@ Read out/integration/index.html and report.json. The report records stage status
 Docker: build with `docker build -f Dockerfile.integration -t gacky-integration .`, then `docker run --name gacky-run --network none -v "$PWD/upstream:/upstream:ro" gacky-integration`. Git checkout ownership must be trusted explicitly if different from container UID; CI uses an explicit safe-directory list. Copy results using `docker cp gacky-run:/output/run ./integration-result`. The image pins Python and direct/transitive Python versions; OS package/image digests are not locked. Docker covers contracts, not Remotion/browser rendering. No real-song, live Suno, VOCALOID synthesis or automatic lyric alignment claim.
 
 CI separately renders the generated 30-second WAV with the Japanese captions and verifies streams/audio. Human review remains required.
+
+## Verified baseline
+[CI run 45546958404](https://github.com/Gacky-Lab/AI-MUSIC-VIDEO-STUDIO/actions/runs/45546958404): host and network-disabled Docker artifact hashes matched; 30s video rendered, four stream/audio checks and three regression checks passed. Expanded note/transcript candidate gates and unit-test coverage reporting are pending verification. Candidate timing must not be treated as human-approved; synthetic-only timing is checked against authored ground truth.
