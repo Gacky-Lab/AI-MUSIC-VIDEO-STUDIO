@@ -1,0 +1,3 @@
+# Security evidence (research scope)
+
+The dependency and static security evidence workflow collects pip-audit, npm audit and Bandit JSON reports plus individual exit codes. Workflow success indicates collection only, not a clean scan. Nonzero exit may represent findings or a scanner/network failure. Review reports before release; this is not a penetration test, dependency SBOM, or production security certification. The npm dependency tree is generated during the scan and not a committed lock. Existing local command execution is limited to trusted checkouts; user-supplied repository contents must not be executed.
