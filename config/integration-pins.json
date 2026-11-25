@@ -1,7 +1,7 @@
 {
   "lyric": {
     "repository": "Gacky-Lab/LYRIC-DESIGN-FRAMEWORK",
-    "sha": "5fe6d48795eace1f8e42936afb0a88a1e3c5e2b3"
+    "sha": "a748dc43a25632e90fa997428f2726778fd883d0"
   },
   "suno": {
     "repository": "Gacky-Lab/SUNO-GENERATION-OPTIMIZER",
@@ -13,6 +13,6 @@
   },
   "mir": {
     "repository": "Gacky-Lab/AI-MUSIC-INTELLIGENCE-ENGINE",
-    "sha": "affe00f8eb8355abd456a3cadf8678e1a337bbd5"
+    "sha": "aca0837bfef4f7f0820bfffadea442eedc136cf0"
   }
 }
