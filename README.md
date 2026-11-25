@@ -65,3 +65,7 @@ No private music, credentials, signed URLs, proprietary assets or voicebanks. Li
 
 ## Japanese end-to-end synthetic verification candidate
 [Quality gates](docs/JAPANESE_RENDER_QA.md) extend the pinned upstream test through 30-second rendering, Japanese font availability, black-frame detection, sampled caption-region brightness, and one-second audio similarity. [Integrated CI passed](https://github.com/Gacky-Lab/AI-MUSIC-VIDEO-STUDIO/actions/runs/45543328049). Human review and real-song release remain blocked.
+
+## Five-repository integration candidate
+
+[Integration runner and Docker instructions](docs/FIVE_REPO_INTEGRATION.md). Offline synthetic pipeline with pinned upstream code, failure reports, and a local HTML evidence dashboard. Live Suno, vocal synthesis, and real-song quality are NOT_RUN. CI evidence pending until verified.

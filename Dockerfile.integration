@@ -1,0 +1,10 @@
+FROM python:3.11.11-slim-bookworm
+WORKDIR /app
+RUN apt-get update && apt-get install -y --no-install-recommends git && rm -rf /var/lib/apt/lists/*
+COPY requirements-integration.txt .
+RUN pip install --no-cache-dir -r requirements-integration.txt
+COPY scripts/ scripts/
+COPY config/integration-pins.json config/integration-pins.json
+RUN useradd --create-home --uid 10001 runner && mkdir /output && chown runner:runner /output
+USER runner
+ENTRYPOINT ["python","scripts/integration_runner.py","--upstream","/upstream","--output","/output/run"]

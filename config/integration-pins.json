@@ -1,0 +1,18 @@
+{
+  "lyric": {
+    "repository": "Gacky-Lab/LYRIC-DESIGN-FRAMEWORK",
+    "sha": "5fe6d48795eace1f8e42936afb0a88a1e3c5e2b3"
+  },
+  "suno": {
+    "repository": "Gacky-Lab/SUNO-GENERATION-OPTIMIZER",
+    "sha": "41a89bd345a5f26689393c1999c7c9e9e0ef9898"
+  },
+  "vocaloid": {
+    "repository": "Gacky-Lab/AI-VOCALOID-STUDIO",
+    "sha": "bd444e277b3819a9a9981352306b9e4fca5ff363"
+  },
+  "mir": {
+    "repository": "Gacky-Lab/AI-MUSIC-INTELLIGENCE-ENGINE",
+    "sha": "affe00f8eb8355abd456a3cadf8678e1a337bbd5"
+  }
+}

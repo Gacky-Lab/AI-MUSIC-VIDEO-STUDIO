@@ -1,0 +1,7 @@
+**
+!scripts/
+!scripts/**
+!config/
+!config/integration-pins.json
+!requirements-integration.txt
+!Dockerfile.integration
