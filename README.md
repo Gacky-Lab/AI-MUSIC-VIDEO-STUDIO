@@ -68,4 +68,8 @@ No private music, credentials, signed URLs, proprietary assets or voicebanks. Li
 
 ## Five-repository integration candidate
 
-[Integration runner and Docker instructions](docs/FIVE_REPO_INTEGRATION.md). Offline synthetic pipeline with pinned upstream code, failure reports, and a local HTML evidence dashboard. Live Suno, vocal synthesis, and real-song quality are NOT_RUN. [Five-repository CI](https://github.com/Gacky-Lab/AI-MUSIC-VIDEO-STUDIO/actions/runs/45546958404) passed host and network-disabled Docker reproducibility plus 30-second video rendering and 7 independent render checks. Note and transcript alignment candidates are being added with expanded gates.
+[Integration runner and Docker instructions](docs/FIVE_REPO_INTEGRATION.md). Offline synthetic pipeline with pinned upstream code, failure reports, and a local HTML evidence dashboard. Live Suno, vocal synthesis, and real-song quality are NOT_RUN. [Five-repository CI](https://github.com/Gacky-Lab/AI-MUSIC-VIDEO-STUDIO/actions/runs/45546958404) passed host and network-disabled Docker reproducibility plus 30-second video rendering and 7 independent render checks. [Expanded CI](https://github.com/Gacky-Lab/AI-MUSIC-VIDEO-STUDIO/actions/runs/45547270779) passed 11 stages, 309/309 eligible synthetic pitch frames within 35 cents, 60/60 note sequence and 35 ms maximum onset error; Docker artifacts matched and seven render checks passed.
+
+## Local operation and security evidence
+
+[Local loopback console](docs/LOCAL_CONSOLE.md) runs the synthetic pipeline only. [Security reports](docs/SECURITY_EVIDENCE.md) include scanner findings, not a clean-security assertion. [Latest alpha release](https://github.com/Gacky-Lab/AI-MUSIC-VIDEO-STUDIO/releases/tag/v0.2.0-alpha) includes synthetic video and evidence bundle once published.

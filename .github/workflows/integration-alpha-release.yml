@@ -1,0 +1,86 @@
+name: Integration alpha publication
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/integration-alpha-release.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: integration-alpha-publication
+  cancel-in-progress: false
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      TAG: v0.2.0-alpha
+      TARGET: f790d577a404b76e973c91c275c8280fe0328c4e
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Verify source runs and release state
+        id: gate
+        run: |
+          set -euo pipefail
+          test "$(gh api repos/$GH_REPO/actions/runs/45547270779 --jq '.head_sha + ":" + .conclusion')" = 'd691ee2aec039b0750cc8b41e7e7a4670a2d1d39:success'
+          test "$(gh api repos/$GH_REPO/actions/runs/45547458355 --jq '.head_sha + ":" + .conclusion')" = 'f5de726ca005048b9778c7214f9493062ab26458:success'
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+          else
+            if git ls-remote --exit-code --tags origin "refs/tags/$TAG" >/dev/null; then
+              echo "Existing tag without release; review manually"; exit 1
+            else
+              status=$?; test "$status" -eq 2
+            fi
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/download-artifact@v4
+        if: steps.gate.outputs.publish == 'true'
+        with:
+          name: five-repo-evidence
+          run-id: 45547270779
+          github-token: ${{ github.token }}
+          path: evidence/integration
+      - uses: actions/download-artifact@v4
+        if: steps.gate.outputs.publish == 'true'
+        with:
+          name: security-evidence
+          run-id: 45547458355
+          github-token: ${{ github.token }}
+          path: evidence/security
+      - name: Assemble synthetic-only release
+        if: steps.gate.outputs.publish == 'true'
+        run: |
+          python - <<'PY'
+          import pathlib,json,shutil,hashlib,zipfile
+          root=pathlib.Path('evidence/integration')
+          read=lambda p:json.loads((root/p).read_text())
+          a=read('integration/report.json'); b=read('docker-integration/report.json')
+          assert a['mode']==b['mode']=='SYNTHETIC_OFFLINE' and a['status']==b['status']=='PASS'
+          assert len(a['stages'])==11 and all(x=='PASS' for x in a['stages'].values())
+          assert a['artifacts']==b['artifacts']
+          for k in ('live_suno','vocal_synthesis','real_song','artistic_acceptance'): assert a[k]=='NOT_RUN'
+          assert a['pitch_benchmark']['correct_frames']==a['pitch_benchmark']['eligible_frames']==309
+          assert a['note_benchmark']['matched_pitch_sequence']==60
+          for p,n in [('integration-video/report.json',4),('integration-video/quality.json',3)]:
+              r=read(p); assert len(r['checks'])==n and all(v=='PASS' for v in r['checks'].values())
+          for name,h in a['artifacts'].items():
+              p=root/'integration'/name
+              assert p.is_file() and hashlib.sha256(p.read_bytes()).hexdigest()==h
+          out=pathlib.Path('release-assets'); out.mkdir()
+          shutil.copyfile(root/'integration-video/preview.mp4',out/'five-repo-synthetic-preview.mp4')
+          shutil.copyfile(root/'integration/report.json',out/'integration-report.json')
+          with zipfile.ZipFile(out/'synthetic-evidence.zip','w',zipfile.ZIP_DEFLATED) as z:
+              for p in sorted(pathlib.Path('evidence').rglob('*')):
+                  if p.is_file(): z.write(p,p.relative_to('evidence'))
+          (out/'SHA256SUMS.txt').write_text(''.join(hashlib.sha256(p.read_bytes()).hexdigest()+'  '+p.name+'\n' for p in sorted(out.iterdir())))
+          PY
+      - name: Publish verified research preview
+        if: steps.gate.outputs.publish == 'true'
+        run: gh release create "$TAG" release-assets/* --target "$TARGET" --prerelease --title "$TAG | Five-repository synthetic integration" --notes-file docs/releases/v0.2.0-alpha.md
