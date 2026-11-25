@@ -1,0 +1,71 @@
+name: Five repository integration
+on:
+  push:
+    branches: [main]
+    paths: ['scripts/integration_runner.py','tests/test_integration_runner.py','config/integration-pins.json','requirements-integration.txt','Dockerfile.integration','.github/workflows/five-repo.yml']
+  pull_request:
+    paths: ['scripts/integration_runner.py','tests/test_integration_runner.py','config/integration-pins.json','requirements-integration.txt','Dockerfile.integration','.github/workflows/five-repo.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: Gacky-Lab/LYRIC-DESIGN-FRAMEWORK
+          ref: 5fe6d48795eace1f8e42936afb0a88a1e3c5e2b3
+          path: upstream/lyric
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: Gacky-Lab/SUNO-GENERATION-OPTIMIZER
+          ref: 41a89bd345a5f26689393c1999c7c9e9e0ef9898
+          path: upstream/suno
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: Gacky-Lab/AI-VOCALOID-STUDIO
+          ref: bd444e277b3819a9a9981352306b9e4fca5ff363
+          path: upstream/vocaloid
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: Gacky-Lab/AI-MUSIC-INTELLIGENCE-ENGINE
+          ref: affe00f8eb8355abd456a3cadf8678e1a337bbd5
+          path: upstream/mir
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -r requirements-integration.txt
+      - run: python -m unittest discover -s tests -v
+      - run: python scripts/integration_runner.py --upstream upstream --output out/integration
+      - name: Containerized offline reproduction
+        run: |
+          docker build -f Dockerfile.integration -t gacky-integration .
+          docker run --name gacky-run --network none -e GIT_CONFIG_COUNT=4 -e GIT_CONFIG_KEY_0=safe.directory -e GIT_CONFIG_VALUE_0=/upstream/lyric -e GIT_CONFIG_KEY_1=safe.directory -e GIT_CONFIG_VALUE_1=/upstream/suno -e GIT_CONFIG_KEY_2=safe.directory -e GIT_CONFIG_VALUE_2=/upstream/vocaloid -e GIT_CONFIG_KEY_3=safe.directory -e GIT_CONFIG_VALUE_3=/upstream/mir -v "$PWD/upstream:/upstream:ro" gacky-integration
+          docker cp gacky-run:/output/run out/docker-integration
+          python -c "import json; from pathlib import Path; a,b=[json.loads(Path(p).read_text()) for p in ('out/integration/report.json','out/docker-integration/report.json')]; assert a['status']==b['status']=='PASS'; assert a['artifacts']==b['artifacts']"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: sudo apt-get update && sudo apt-get install -y ffmpeg fonts-noto-cjk
+      - run: npm install --no-audit --no-fund
+        working-directory: remotion
+      - run: python scripts/lyric_preview.py --wav out/integration/source.wav --lyrics out/integration/handoff.json --timing out/integration/timing.json --mir out/integration/evidence.json --output-dir out/integration-video --authorized-local-preview
+      - run: python scripts/verify_japanese_render.py --video out/integration-video/preview.mp4 --reference out/integration/source.wav --output out/integration-video/quality.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: five-repo-evidence
+          path: |
+            out/integration/
+            out/docker-integration/report.json
+            out/integration-video/
+          if-no-files-found: warn
