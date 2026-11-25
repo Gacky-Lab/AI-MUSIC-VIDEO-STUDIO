@@ -38,3 +38,8 @@ Synthetic 15-second MP4 and report are written to ignored out/. This is a simple
 - [AI-VOCALOID-STUDIO](https://github.com/Gacky-Lab/AI-VOCALOID-STUDIO): proposed Song IR and mastered audio.
 
 No private music, credentials, signed URLs, proprietary assets or voicebanks. License undecided. Human approval required for paid calls and release.
+
+## Portfolio and next milestone
+- [Gacky-Lab portfolio README draft](docs/profile/README.md)
+- [Conceptual portfolio architecture](docs/profile/architecture.svg)
+- [P0b Remotion candidate / Windows bring-up](docs/P0B_REMOTION.md): synthetic motion graphic; runtime validation pending at authoring.

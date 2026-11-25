@@ -1,0 +1,38 @@
+name: Remotion synthetic smoke
+on:
+  pull_request:
+    paths:
+      - 'remotion/**'
+      - 'scripts/remotion_fixture.py'
+      - 'scripts/verify_remotion.py'
+      - '.github/workflows/remotion-smoke.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - run: python scripts/remotion_fixture.py
+      - run: mkdir -p out
+      - run: npm install --no-audit --no-fund
+        working-directory: remotion
+      - run: npm run render
+        working-directory: remotion
+      - run: python scripts/verify_remotion.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: synthetic-remotion-preview
+          path: |
+            out/remotion.mp4
+            out/remotion-report.json
+            remotion/package-lock.json
