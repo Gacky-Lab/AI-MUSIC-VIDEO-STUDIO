@@ -9,11 +9,13 @@ Independent research and engineering for reproducible AI music and music video p
 |---|---|---|
 | [LYRIC-DESIGN-FRAMEWORK](https://github.com/Gacky-Lab/LYRIC-DESIGN-FRAMEWORK) | Lyric design, emotional modeling, versioned handoff | Editorial framework and offline tests; listener efficacy unproven |
 | [SUNO-GENERATION-OPTIMIZER](https://github.com/Gacky-Lab/SUNO-GENERATION-OPTIMIZER) | MCP generation, budgeted feedback, independent QA | Authorized generation and pilot experiments; optimization advantage unproven |
-| [AI-MUSIC-INTELLIGENCE-ENGINE](https://github.com/Gacky-Lab/AI-MUSIC-INTELLIGENCE-ENGINE) | MIR, transcription, expression and evaluation | Research concept; no operational API assumed |
+| [AI-MUSIC-INTELLIGENCE-ENGINE](https://github.com/Gacky-Lab/AI-MUSIC-INTELLIGENCE-ENGINE) | MIR, transcription, expression and evaluation | Offline synthetic WAV analysis verified; shared API and real-song accuracy unverified |
 | [AI-VOCALOID-STUDIO](https://github.com/Gacky-Lab/AI-VOCALOID-STUDIO) | Song IR, vocal synthesis and DAW production | Offline interfaces; end-to-end synthesis not verified |
-| [AI-MUSIC-VIDEO-STUDIO](https://github.com/Gacky-Lab/AI-MUSIC-VIDEO-STUDIO) | Storyboard, timeline, rendering and video QA | Synthetic FFmpeg smoke verified; Remotion/real-song integration under development |
+| [AI-MUSIC-VIDEO-STUDIO](https://github.com/Gacky-Lab/AI-MUSIC-VIDEO-STUDIO) | Storyboard, timeline, rendering and video QA | Synthetic FFmpeg and Remotion rendering verified in CI; real-song integration unverified |
 
 ## Architecture
+![Gacky-Lab conceptual architecture](https://raw.githubusercontent.com/Gacky-Lab/AI-MUSIC-VIDEO-STUDIO/main/docs/profile/architecture.svg)
+
 ```mermaid
 flowchart TD
   L["Lyric design"] --> S["Suno generation"]
