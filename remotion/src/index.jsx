@@ -24,5 +24,22 @@ const MV=()=>{
     <div style={{position:'absolute',left:96,bottom:45,height:5,width:1728*(f+1)/450,background:colors[scene]}}/>
   </AbsoluteFill>;
 };
-const Root=()=> <Composition id="SyntheticMV" component={MV} durationInFrames={450} fps={30} width={1920} height={1080}/>;
+const LyricPreview=({cues=[],pulses=[],synthetic=false})=>{
+  const f=useCurrentFrame();
+  const cue=cues.find(c=>f>=c.startFrame&&f<c.endFrame);
+  const recent=pulses.filter(p=>p<=f).at(-1);
+  const energy=recent===undefined?0:Math.exp(-(f-recent)/5);
+  const scene=Math.floor(f/150)%3;
+  const color=colors[scene];
+  const move=18*Math.sin(f/90);
+  return <AbsoluteFill style={{background:'linear-gradient(135deg,#101b2d,#17344a)',color:'#f0f5fb',fontFamily:'Arial, sans-serif',overflow:'hidden'}}>
+    <Audio src={staticFile('preview.wav')}/>
+    <div style={{position:'absolute',left:460+move,top:100,width:1000,height:860,borderRadius:'50%',background:'radial-gradient(ellipse,'+color+',transparent 68%)',opacity:.13+energy*.13}}/>
+    <div style={{position:'absolute',top:90,left:100,fontSize:26,letterSpacing:5,color}}>GACKY-LAB / {synthetic?'SYNTHETIC DEMO':'LOCAL LYRIC PREVIEW'}</div>
+    <div style={{position:'absolute',left:150,right:150,top:370,height:330,display:'flex',alignItems:'center',justifyContent:'center',fontSize:cue&&cue.text.length>35?52:72,fontWeight:700,textAlign:'center',overflowWrap:'anywhere',lineHeight:1.35}}>{cue?.text||''}</div>
+    <div style={{position:'absolute',left:100,bottom:86,color:'#adbed1',fontSize:24}}>PREVIEW / HUMAN REVIEW REQUIRED</div>
+    <div style={{position:'absolute',left:100,bottom:48,height:5,width:1720*(f+1)/900,background:color}}/>
+  </AbsoluteFill>;
+};
+const Root=()=> <><Composition id="SyntheticMV" component={MV} durationInFrames={450} fps={30} width={1920} height={1080}/><Composition id="LyricPreview" component={LyricPreview} durationInFrames={900} fps={30} width={1920} height={1080} defaultProps={{cues:[],pulses:[],synthetic:false}}/></>;
 registerRoot(Root);
