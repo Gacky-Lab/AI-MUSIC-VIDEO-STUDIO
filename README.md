@@ -4,7 +4,7 @@
 
 AI音楽映像制作・自動編集・品質保証基盤 / Reproducible AI music video production framework.
 
-**Status: Phase 1 candidate — 30-second synthetic preview and three-repository input contract verified in CI.** Windows runtime, real-song alignment, subjective video quality and paid generation remain NOT_RUN. Independent research, not affiliated with providers.
+**Status: Phase 1 candidate — 30-second Japanese synthetic preview, three-repository data flow and 14 technical checks verified in CI.** Windows runtime, real-song alignment, subjective video quality and paid generation remain NOT_RUN. Independent research, not affiliated with providers.
 
 ```mermaid
 flowchart LR
@@ -18,6 +18,11 @@ flowchart LR
  Q -->|Fail| T
  Q -->|Pass and human approval| E[MV export]
 ```
+
+## Demo and alpha releases
+
+- [Release downloads and notes](https://github.com/Gacky-Lab/AI-MUSIC-VIDEO-STUDIO/releases): initial alpha, synthetic preview only.
+- [Verified Japanese 30-second demo (CI source)](https://github.com/Gacky-Lab/AI-MUSIC-VIDEO-STUDIO/actions/runs/45543328049): 1080p30, 14 technical checks passed; no real music or artistic-quality claim.
 
 ## Documents
 - [Requirements and architecture](docs/requirements.md)
@@ -59,4 +64,4 @@ No private music, credentials, signed URLs, proprietary assets or voicebanks. Li
 [Cross-repository synthetic smoke](docs/CROSS_REPO_SMOKE.md) uses the actual pinned lyric exporter and MIR analyzer to produce Japanese caption and audio evidence inputs. [Seven contract checks passed](https://github.com/Gacky-Lab/AI-MUSIC-VIDEO-STUDIO/actions/runs/45543144307).
 
 ## Japanese end-to-end synthetic verification candidate
-[Quality gates](docs/JAPANESE_RENDER_QA.md) extend the pinned upstream test through 30-second rendering, Japanese font availability, black-frame detection, sampled caption-region brightness, and one-second audio similarity. CI pending at authoring. Human review and real-song release remain blocked.
+[Quality gates](docs/JAPANESE_RENDER_QA.md) extend the pinned upstream test through 30-second rendering, Japanese font availability, black-frame detection, sampled caption-region brightness, and one-second audio similarity. [Integrated CI passed](https://github.com/Gacky-Lab/AI-MUSIC-VIDEO-STUDIO/actions/runs/45543328049). Human review and real-song release remain blocked.

@@ -11,7 +11,7 @@ Independent research and engineering for reproducible AI music and music video p
 | [SUNO-GENERATION-OPTIMIZER](https://github.com/Gacky-Lab/SUNO-GENERATION-OPTIMIZER) | MCP generation, budgeted feedback, independent QA | Authorized generation and pilot experiments; optimization advantage unproven |
 | [AI-MUSIC-INTELLIGENCE-ENGINE](https://github.com/Gacky-Lab/AI-MUSIC-INTELLIGENCE-ENGINE) | MIR, transcription, expression and evaluation | Offline WAV analysis and pinned handoff to MV preparation verified on synthetic inputs; real-song accuracy unverified |
 | [AI-VOCALOID-STUDIO](https://github.com/Gacky-Lab/AI-VOCALOID-STUDIO) | Song IR, vocal synthesis and DAW production | Offline interfaces; [owner-reported Windows asa 10s PoC in draft PR](https://github.com/Gacky-Lab/AI-VOCALOID-STUDIO/pull/1); faithful reproduction unverified |
-| [AI-MUSIC-VIDEO-STUDIO](https://github.com/Gacky-Lab/AI-MUSIC-VIDEO-STUDIO) | Storyboard, timeline, rendering and video QA | 30s synthetic Remotion render and cross-repository input contracts verified; real-song integration unverified |
+| [AI-MUSIC-VIDEO-STUDIO](https://github.com/Gacky-Lab/AI-MUSIC-VIDEO-STUDIO) | Storyboard, timeline, rendering and video QA | 30s Japanese synthetic Remotion render and 14 cross-repository/technical checks verified; real-song integration unverified |
 
 ## Architecture
 ![Gacky-Lab conceptual architecture](https://raw.githubusercontent.com/Gacky-Lab/AI-MUSIC-VIDEO-STUDIO/main/docs/profile/architecture.svg)
@@ -32,6 +32,11 @@ flowchart TD
   Q -->|Defect| M
 ```
 Conceptual interfaces, not a claim of operational end-to-end integration. Suno-only and vocaloid/DAW routes are both supported as design targets.
+
+## Start here
+- [Demo and release downloads](https://github.com/Gacky-Lab/AI-MUSIC-VIDEO-STUDIO/releases)
+- [Japanese synthetic video: 14 technical checks passed](https://github.com/Gacky-Lab/AI-MUSIC-VIDEO-STUDIO/actions/runs/45543328049)
+- [Suno alpha releases](https://github.com/Gacky-Lab/SUNO-GENERATION-OPTIMIZER/releases) · [Lyric alpha releases](https://github.com/Gacky-Lab/LYRIC-DESIGN-FRAMEWORK/releases) · [MIR alpha releases](https://github.com/Gacky-Lab/AI-MUSIC-INTELLIGENCE-ENGINE/releases) · [VOCALOID alpha releases](https://github.com/Gacky-Lab/AI-VOCALOID-STUDIO/releases)
 
 ## Reproducible evidence
 - [30-second synthetic video and independent stream/audio checks](https://github.com/Gacky-Lab/AI-MUSIC-VIDEO-STUDIO/actions/runs/45542889707)

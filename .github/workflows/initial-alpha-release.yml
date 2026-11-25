@@ -1,0 +1,70 @@
+name: Initial alpha publication
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/initial-alpha-release.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: initial-alpha-publication
+  cancel-in-progress: false
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      TAG: v0.1.0-alpha
+      TARGET: 121d54fab438c16a0f4eddef1555f42843b00f65
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Check initial version
+        id: gate
+        run: |
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+          else
+            if git ls-remote --exit-code --tags origin "refs/tags/$TAG" >/dev/null; then
+              echo "Existing tag without release; review manually"; exit 1
+            else
+              status=$?; test "$status" -eq 2
+            fi
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Retrieve verified synthetic artifact
+        if: steps.gate.outputs.publish == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: cross-repo-evidence
+          run-id: 45543328049
+          github-token: ${{ github.token }}
+          path: release-input
+      - name: Verify provenance and assemble release
+        if: steps.gate.outputs.publish == 'true'
+        run: |
+          set -euo pipefail
+          test "$(gh api repos/$GH_REPO/actions/runs/45543328049 --jq '.head_sha + ":" + .conclusion')" = '77b7dd2e6a1d24c47965e69aa0db70e307cd5083:success'
+          python - <<'PY'
+          import json, shutil, pathlib, hashlib
+          src=pathlib.Path('release-input/out')
+          dest=pathlib.Path('release-assets'); dest.mkdir()
+          entries=[('cross-repo/report.json','contract-report.json',7),('japanese-preview/report.json','render-report.json',4),('japanese-preview/quality.json','quality-report.json',3)]
+          for path,name,count in entries:
+              report=json.loads((src/path).read_text())
+              assert len(report['checks'])==count and all(v=='PASS' for v in report['checks'].values())
+              if count==4: assert report['synthetic'] is True
+              shutil.copyfile(src/path,dest/name)
+          shutil.copyfile(src/'japanese-preview/preview.mp4',dest/'synthetic-japanese-preview.mp4')
+          shutil.copyfile(src/'japanese-preview/sample.png',dest/'sample.png')
+          assert (dest/'synthetic-japanese-preview.mp4').stat().st_size>10000
+          (dest/'SHA256SUMS.txt').write_text(''.join(hashlib.sha256(p.read_bytes()).hexdigest()+'  '+p.name+'\n' for p in sorted(dest.iterdir())))
+          PY
+      - name: Publish fixed research alpha
+        if: steps.gate.outputs.publish == 'true'
+        run: gh release create "$TAG" release-assets/* --target "$TARGET" --prerelease --title "$TAG | Synthetic Japanese MV" --notes-file docs/releases/v0.1.0-alpha.md
