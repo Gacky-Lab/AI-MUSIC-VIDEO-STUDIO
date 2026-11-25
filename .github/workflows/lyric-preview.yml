@@ -1,0 +1,36 @@
+name: Synthetic lyric preview
+on:
+  pull_request:
+    paths:
+      - 'remotion/**'
+      - 'scripts/lyric_preview*.py'
+      - 'scripts/verify_lyric_preview.py'
+      - 'tests/test_lyric_preview.py'
+      - '.github/workflows/lyric-preview.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - run: python -m unittest discover -s tests -v
+      - run: npm install --no-audit --no-fund
+        working-directory: remotion
+      - run: python scripts/lyric_preview_fixture.py
+      - run: python scripts/lyric_preview.py --wav out/p1-fixture/source.wav --lyrics out/p1-fixture/lyrics.json --timing out/p1-fixture/timing.json --mir out/p1-fixture/mir.json --output-dir out/p1-preview --authorized-local-preview
+      - uses: actions/upload-artifact@v4
+        with:
+          name: synthetic-30s-lyric-preview
+          path: |
+            out/p1-preview/preview.mp4
+            out/p1-preview/report.json

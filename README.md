@@ -51,3 +51,6 @@ No private music, credentials, signed URLs, proprietary assets or voicebanks. Li
 
 - [CI run and downloadable artifact](https://github.com/Gacky-Lab/AI-MUSIC-VIDEO-STUDIO/actions/runs/45542015749): 15 s, 1920×1080, 30 fps, 450 frames; all five independent stream checks passed. Synthetic test tone only.
 - No paid generation API was used. This is not a real-song MV or an artistic-quality assessment. The generated package lock is in the CI artifact; dependency lock review and Windows verification remain open.
+
+## P1 local lyric preview candidate
+[30-second local preview guide](docs/P1_LOCAL_PREVIEW.md): final WAV, Lyric Handoff v1, manually reviewed anchors and optional hash-bound MIR evidence. Synthetic CI pending at authoring; real-song acceptance remains NOT_RUN.
