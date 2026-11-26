@@ -26,6 +26,8 @@ The [canonical bilingual profile and market hypotheses](https://github.com/Gacky
 
 [正式プロフィール・市場課題仮説](https://github.com/Gacky-Lab/Gacky-Lab/blob/main/README.md)を上位の研究方針とします。初期優先課題は修正時の表現保持（MP-05）と再生成負担（MP-02）です。最初の検証は短い歌詞修正と指定した表現の保持を既存手段と比較します。市場ニーズの代表性・比較優位・実用上の効果は未実証です。
 
+**Portfolio evidence / 調査・検証の正本:** [Market evidence and counterexamples](https://github.com/Gacky-Lab/Gacky-Lab/blob/main/docs/market-research/MARKET_EVIDENCE.md) · [Related projects](https://github.com/Gacky-Lab/Gacky-Lab/blob/main/docs/market-research/RELATED_PROJECTS.md) · [Requirements traceability and validation](https://github.com/Gacky-Lab/Gacky-Lab/blob/main/docs/governance/RESEARCH_TRACEABILITY.md) · [Research status](https://github.com/Gacky-Lab/Gacky-Lab/blob/main/docs/governance/RESEARCH_STATUS.md).
+
 ## Research portfolio
 | Project | Focus | Evidence boundary |
 |---|---|---|
