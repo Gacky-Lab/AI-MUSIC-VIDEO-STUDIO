@@ -1,8 +1,30 @@
 # Gacky-Lab
-**Human-led creativity, engineering-driven production.**  
+
+### From AI-generated music to human-directed creativity.
+**AIで曲を作ることから、自分の音楽を作ることへ。**
+
+Human-led creativity. Evidence-driven engineering.  
 感性は人間に。検証はシステムに。
 
-Independent research and engineering for reproducible AI music and music video production, and human–AI musical co-creation. This portfolio explores requirements engineering, music information retrieval, generative AI, singing synthesis, programmatic editing, and independent quality verification.
+Gacky-Lab is an independent research initiative for music creators who want to refine AI-generated music into their own artistic expression. Its research covers creative intent, preservation of desired musical expressions, traceable production, and discovery of value in unexpected changes.
+
+AIで生成した音楽を自分の表現として作り込みたいクリエイターのための独立研究プロジェクトです。創作意図の反映、音楽表現の保持、制作工程の再現性、意図外変化の創作価値を研究します。
+
+## Who and why / 誰の何を解決するのか
+
+Primary audience (hypothesis): independent AI music creators and vocal-synthesis/DAW producers who want to refine specific expressions. Secondary audience: music technology developers and co-creation researchers.
+
+主対象（仮説）：生成した楽曲を細かく編集したい個人AI音楽クリエイター、ボカロP・DTM制作者。副対象：音楽技術開発者・共創研究者。
+
+| Challenge / 課題 | Intended creator value / 目指す価値 |
+|---|---|
+| Controllability / 制御性 | Change intended elements; preserve desired expressions. / 意図した修正と表現の保持 |
+| Reproducibility / 再現性 | Trace production conditions and decisions. / 制作条件と判断の追跡 |
+| Creative discovery / 創造的発見 | Investigate unexpected changes and their potential reuse. / 偶然の価値の発見と再利用可能性の検証 |
+
+The [canonical bilingual profile and market hypotheses](https://github.com/Gacky-Lab/Gacky-Lab/blob/main/README.md#market-hypotheses--市場課題仮説) define six provisional market problems (MP-01–MP-06). The initial priorities are preservation during editing (MP-05) and generation effort/cost (MP-02). The first validation scenario is a short lyric edit with a specified musical expression preserved, compared against available editing methods.
+
+[正式プロフィール・市場課題仮説](https://github.com/Gacky-Lab/Gacky-Lab/blob/main/README.md)を上位の研究方針とします。初期優先課題は修正時の表現保持（MP-05）と再生成負担（MP-02）です。最初の検証は短い歌詞修正と指定した表現の保持を既存手段と比較します。市場ニーズの代表性・比較優位・実用上の効果は未実証です。
 
 ## Research portfolio
 | Project | Focus | Evidence boundary |
@@ -61,6 +83,6 @@ Conceptual interfaces, not a claim of operational end-to-end integration. CDE is
 - Human approval before paid generation or publication; preserve negative results.
 - No credentials, private songs, proprietary voicebanks or unlicensed assets in public Git.
 
-Next milestone: a verified 30-second lyric MV from an authorized final master.
+Next milestones: controlled preservation/edit comparisons (MP-05), matched generation effort comparisons (MP-02), a CDE listening pilot, and a verified 30-second lyric MV from an authorized final master. These are research targets, not achieved outcomes. / 次の検証目標：表現保持、再生成負担、CDE試聴、許諾済み音源でのMV制作。
 
 Independent personal research, not affiliated with Suno, Yamaha, Crypton, Remotion or other providers. No blanket license is granted by this portfolio.
