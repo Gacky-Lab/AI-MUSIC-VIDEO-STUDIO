@@ -24,6 +24,10 @@ flowchart LR
 - [Release downloads and notes](https://github.com/Gacky-Lab/AI-MUSIC-VIDEO-STUDIO/releases): initial alpha, synthetic preview only.
 - [Verified Japanese 30-second demo (CI source)](https://github.com/Gacky-Lab/AI-MUSIC-VIDEO-STUDIO/actions/runs/45543328049): 1080p30, 14 technical checks passed; no real music or artistic-quality claim.
 
+## Real-song production case study / 実曲MVの改稿事例
+
+[「今日を抱いて帰る」の改稿記録](docs/REAL_SONG_MV_CASE_STUDY.md) documents a 3:16 MV made with song-specific Python/FFmpeg scripts. It covers creator-directed lyric typography revisions, five short animation sequences, and audio stream verification. Reproduction with this repository's renderer and comparative editing efficiency remain NOT_RUN.
+
 ## Documents
 - [Requirements and architecture](docs/requirements.md)
 - [Interface decisions and sources](docs/interfaces.md)
